@@ -1,5 +1,32 @@
 #!/bin/bash
 
+# --- Install Zsh and set as default ---
+if ! command -v zsh &> /dev/null; then
+    echo "🐚 Installing Zsh..."
+    
+    # Detect OS/Package Manager
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS usually has Zsh, but this ensures it's handled if using Homebrew
+        brew install zsh
+    elif [ -f /etc/debian_version ]; then
+        sudo apt update && sudo apt install -y zsh
+    elif [ -f /etc/fedora-release ]; then
+        sudo dnf install -y zsh
+    elif [ -f /etc/arch-release ]; then
+        sudo pacman -S --noconfirm zsh
+    else
+        echo "❌ Unknown OS. Please install Zsh manually."
+        exit 1
+    fi
+fi
+
+# Set Zsh as the default shell if it isn't already
+if [[ "$SHELL" != *"zsh"* ]]; then
+    echo "✅ Setting Zsh as the default shell..."
+    chsh -s "$(which zsh)"
+    echo "Note: You may need to log out and back in for the shell change to take effect."
+fi
+
 # Install Starship
 if ! command -v starship &> /dev/null; then
     echo "🚀 Installing Starship..."
