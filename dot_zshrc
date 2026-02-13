@@ -1,0 +1,28 @@
+autoload -Uz compinit
+compinit
+
+source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
+# This line "compiles" your plugins for speed
+antidote load ~/.zsh/.zsh_plugins.txt
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+eval "$(starship init zsh)"
+
+# Paste the aliases you saved from your old setup here
+alias gs='git status'
+alias ls='ls --color=auto'
+if [[ -f ~/.zsh/my_aliases.zsh ]]; then
+    source ~/.zsh/my_aliases.zsh
+fi
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY      # Share history between tabs
+setopt HIST_IGNORE_DUPS   # Don't record same command twice
+setopt AUTO_CD            # Just type a folder name to go there
+
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
