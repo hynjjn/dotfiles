@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo -v
+
 # --- Install Zsh and set as default ---
 if ! command -v zsh &> /dev/null; then
     echo "🐚 Installing Zsh..."
@@ -23,7 +25,7 @@ fi
 # Set Zsh as the default shell if it isn't already
 if [[ "$SHELL" != *"zsh"* ]]; then
     echo "✅ Setting Zsh as the default shell..."
-    chsh -s "$(which zsh)"
+    sudo chsh -s "$(which zsh)" "$USER"
     echo "Note: You may need to log out and back in for the shell change to take effect."
 fi
 
