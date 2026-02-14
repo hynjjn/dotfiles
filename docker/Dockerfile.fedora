@@ -1,0 +1,29 @@
+# Dockerfile.fedora
+FROM fedora:latest
+
+# 1. Set Timezone
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 2. Optimization: Increase parallel downloads for speed
+RUN echo 'max_parallel_downloads=20' >> /etc/dnf/dnf.conf
+
+# 3. Install packages
+RUN dnf install -y \
+    sudo \
+    nano \
+    git \
+    curl \
+    fastfetch \
+    && dnf clean all
+
+# 4. Setup User
+RUN useradd -m -G wheel -s /bin/bash tempuser && \
+    echo 'tempuser:helloworld' | chpasswd && \
+    echo "tempuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER tempuser
+WORKDIR /home/tempuser
+
+# 5. Execution
+CMD ["bash", "-c", "fastfetch; exec bash"]

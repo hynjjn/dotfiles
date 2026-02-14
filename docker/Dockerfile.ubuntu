@@ -1,0 +1,34 @@
+# Using Ubuntu 24.04 which supports the .sources (DEB822) format
+FROM ubuntu:latest
+
+# 1. Set Timezone
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 2. Update Sources to Kakao Mirror
+# This targets the modern DEB822 format used in Ubuntu 24.04+
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirror.kakao.com/ubuntu|g' /etc/apt/sources.list.d/ubuntu.sources && \
+    sed -i 's|http://security.ubuntu.com/ubuntu/|http://mirror.kakao.com/ubuntu|g' /etc/apt/sources.list.d/ubuntu.sources
+
+# 3. Install packages and Fastfetch from GitHub
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sudo \
+    nano \
+    git \
+    curl \
+    ca-certificates \
+    && curl -L -o /tmp/fastfetch.deb https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb \
+    && apt-get install -y /tmp/fastfetch.deb \
+    && rm /tmp/fastfetch.deb \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Setup User
+RUN useradd -m -G sudo -s /bin/bash tempuser && \
+    echo 'tempuser:helloworld' | chpasswd && \
+    echo "tempuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER tempuser
+WORKDIR /home/tempuser
+
+# 5. Execution
+CMD ["bash", "-c", "fastfetch; exec bash"]

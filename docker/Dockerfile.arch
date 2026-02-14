@@ -1,0 +1,31 @@
+# Dockerfile.arch
+FROM archlinux:latest
+
+# 1. Set Timezone
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 2. Optimization: Enable Parallel Downloads
+RUN sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 5/' /etc/pacman.conf
+
+# 3. Update Mirrors and Install packages
+# We combine these to ensure the database is fresh for the installs
+RUN pacman -Syu --noconfirm \
+    sudo \
+    nano \
+    git \
+    curl \
+    fastfetch && \
+    pacman -Scc --noconfirm && \
+    rm -rf /var/cache/pacman/pkg/*
+
+# 4. Setup User
+RUN useradd -m -G wheel -s /bin/bash tempuser && \
+    echo 'tempuser:helloworld' | chpasswd && \
+    echo '%wheel ALL=(ALL:ALL) ALL' > /etc/sudoers.d/wheel
+
+USER tempuser
+WORKDIR /home/tempuser
+
+# 5. Execution
+CMD ["bash", "-c", "fastfetch; exec bash"]

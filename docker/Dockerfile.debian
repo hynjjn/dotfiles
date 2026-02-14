@@ -1,0 +1,33 @@
+# Now the official Stable release
+FROM debian:latest
+
+# 1. Set Timezone
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 2. Update Sources
+# We swap only the main repo to Kakao. 
+# We keep the security repo pointing to debian.org to avoid that 'NOSPLIT' mirror error.
+RUN sed -i 's|URIs: http://deb.debian.org/debian/|URIs: https://mirror.kakao.com/debian/|' /etc/apt/sources.list.d/debian.sources
+
+# 3. Install packages
+# Added -o Acquire::Retries=3 in case of network hiccups
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::Retries=3 \
+    sudo \
+    nano \
+    git \
+    curl \
+    fastfetch \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Setup User
+RUN useradd -m -G sudo -s /bin/bash tempuser && \
+    echo 'tempuser:helloworld' | chpasswd && \
+    echo "tempuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER tempuser
+WORKDIR /home/tempuser
+
+# 5. Execution
+CMD ["bash", "-c", "fastfetch; exec bash"]
