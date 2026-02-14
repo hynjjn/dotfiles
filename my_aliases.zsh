@@ -31,19 +31,3 @@ gitpush() {
     git push
 }
 
-# incognito: requires docker images saved locally
-incognito() {
-    local os_type=$1
-    local custom_name=${2:-temp-session}
-
-    case "$os_type" in
-        ubuntu|debian|fedora|arch)
-            echo "Starting incognito $os_type session as '$custom_name'..."
-            docker run -it --rm --name "$custom_name" "my-$os_type"
-            ;;
-        *)
-            echo "Error: OS '$os_type' not found."
-            echo "Usage: incognito [ubuntu|debian|fedora|arch] [name]"
-            ;;
-    esac
-}
