@@ -1,3 +1,7 @@
+typeset -U path PATH
+[[ -d "$HOME/.local/bin" ]] && path=("$HOME/.local/bin" $path)
+export PATH
+
 autoload -Uz compinit
 compinit
 
