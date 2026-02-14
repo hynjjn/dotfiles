@@ -11,6 +11,8 @@ alias rsh="source ~/.zshrc"
 alias l="ls -lah"
 alias diskpart="lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL"
 alias ff="fastfetch"
+alias gs='git status'
+alias ls='ls --color=auto'
 
 # npm
 alias nd="npm run dev"
