@@ -11,7 +11,7 @@ if ! command -v zsh &> /dev/null; then
         # macOS usually has Zsh, but this ensures it's handled if using Homebrew
         brew install zsh
     elif [ -f /etc/debian_version ]; then
-        sudo apt update && sudo apt install -y zsh
+        sudo apt-get update && sudo apt-get install -y zsh
     elif [ -f /etc/fedora-release ]; then
         sudo dnf install -y zsh
     elif [ -f /etc/arch-release ]; then
@@ -25,7 +25,7 @@ fi
 # Set Zsh as the default shell if it isn't already
 if [[ "$SHELL" != *"zsh"* ]]; then
     echo "✅ Setting Zsh as the default shell..."
-    sudo chsh -s "$(which zsh)" "$USER"
+    sudo chsh -s "$(which zsh)" $(whoami)
     echo "Note: You may need to log out and back in for the shell change to take effect."
 fi
 
