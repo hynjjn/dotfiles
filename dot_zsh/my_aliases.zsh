@@ -49,3 +49,9 @@ incognito() {
             ;;
     esac
 }
+
+chezmoitest() {
+    echo "Starting incognito chezmoi-test session..."
+    docker run -it --rm --name "chezmoi-test" chezmoi-test
+}
+
