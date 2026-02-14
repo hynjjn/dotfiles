@@ -1,9 +1,8 @@
 # chezmoi
 ```bash
 # for public repo
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply hynjjn
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply hynjjn
 
 # for private repo
-sh -c "$(curl -fsLS get.chezmoi.io)"
-./bin/chezmoi init --apply git@github.com:hynjjn/dotfiles.git
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply git@github.com:hynjjn/dotfiles.git
 ```
