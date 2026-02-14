@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN useradd -m -G sudo -s /bin/bash tempuser && \
     echo 'tempuser:helloworld' | chpasswd && \
     echo "tempuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    printf '#!/bin/bash\nsh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply hynjjn\n' > /home/tempuser/run.sh && \
+    printf '#!/bin/bash\nsh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply hynjjn\n' > /home/tempuser/run.sh && \
     chmod +x /home/tempuser/run.sh && \
     chown tempuser:tempuser /home/tempuser/run.sh
 
