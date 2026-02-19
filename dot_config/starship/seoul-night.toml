@@ -14,6 +14,7 @@ $nodejs\
 $rust\
 $golang\
 $php\
+$python\
 [](fg:#212736 bg:#1d2230)\
 $time\
 [ ](fg:#1d2230)\
@@ -30,6 +31,7 @@ Amazon = " "
 Android = " "
 Arch = "󰣇 "
 Artix = "󰣇 "
+CachyOS = "󰣇 "
 CentOS = " "
 Debian = "󰣚 "
 Fedora = "󰣛 "
@@ -92,6 +94,12 @@ format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[python]
+symbol = ""
+style = "bg:#212736"
+# This format includes the version and the venv name in brackets
+format = '[[ $symbol ($version) (\($virtualenv\)) ](fg:#769ff0 bg:#212736)]($style)'
 
 [time]
 disabled = false
